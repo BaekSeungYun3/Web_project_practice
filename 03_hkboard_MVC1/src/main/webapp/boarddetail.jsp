@@ -11,12 +11,8 @@
 <title>Insert title here</title>
 </head>
 <%
-	//전달된 파라미터:seq
-	String sseq = request.getParameter("seq");
-	int seq = Integer.parseInt(sseq);	//String숫자를 정수형으로 변환
-
-	HKDao dao = new HKDao();
-	HKDto dto = dao.getBoard(seq);
+	//dto → Object → dto  
+	HKDto dto = (HKDto)request.getAttribute("dto");
 %>
 <body>
 	<h1>게시판 상세보기</h1>
@@ -37,7 +33,7 @@
 					<td colspan="2">
 						<input type="button" onclick="updateForm('<%=dto.getSeq()%>')" value="수정폼 이동"/>
 						<input type="button" onclick="delBoard(<%=dto.getSeq()%>)" value="삭제"/>
-						<input type="button" value="글 목록" onclick="location.href='boardlist.jsp'"/>
+						<input type="button" value="글 목록" onclick="location.href= hkController.jsp?Command=boardlist"/>
 					</td>
 				</tr>
 			</table>

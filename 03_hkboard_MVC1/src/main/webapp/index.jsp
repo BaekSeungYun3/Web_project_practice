@@ -9,6 +9,6 @@
 <title>게시판</title>
 </head>
 <body>
-	<a href="boardlist.jsp">게시판 보기</a>
+	<a href="hkController.jsp?command=boardlist">게시판 보기</a>
 </body>
 </html>
