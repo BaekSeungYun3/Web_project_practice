@@ -12,15 +12,16 @@
 </head>
 <body>
 <%
-	//boarddetail.jsp → parameter: seq 전달
+	/* //boarddetail.jsp → parameter: seq 전달
 	String sseq = request.getParameter("seq");	//반환값은 항상 문자열
 	int seq = Integer.parseInt(sseq);	//int형으로 변환
 	
-	HKDao dao = new HKDao();
-	HKDto dto = dao.getBoard(seq);
+	HKDao dao = new HKDao(); */
+	HKDto dto = (HKDto)request.getAttribute("dto");
 %>
 	<h1>글 수정하기</h1>
-		<form action="boardupdate.jsp" method="post">
+		<form action="hkController.jsp" method="post">
+			<input type="hidden" name="command" value="boardupdate"/>
 			<input type="hidden" name="seq" value="<%=dto.getSeq()%>"/>
 			<table border="1">
 				<tr>
@@ -38,7 +39,7 @@
 				<tr>
 					<td colspan="2">
 						<input type="submit" value="수정완료"/>
-						<input type="button" value="글 목록" onclick="location.href='boardlist.jsp'"/>
+						<input type="button" value="글 목록" onclick="location.href='hkController.jsp?command=boardlist'"/>
 					</td>
 				</tr>
 			</table>

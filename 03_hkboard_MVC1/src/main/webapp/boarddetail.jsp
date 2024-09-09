@@ -40,12 +40,12 @@
 	<script type="text/javascript">
 		//수정폼으로 이동
 		function updateForm(seq) {
-			location.href = "boardupdateform.jsp?seq="+seq;
+			location.href = "hkController.jsp?command=boardupdateform&seq="+seq;
 		}
 		
 		//글 삭제
 		function delBoard(seq) {
-			location.href = "deleteboard.jsp?seq="+seq;
+			location.href = "hkController.jsp?command=deleteboard&seq="+seq;
 		}
 	</script>
 </body>

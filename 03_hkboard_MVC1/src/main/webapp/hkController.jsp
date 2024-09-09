@@ -1,7 +1,8 @@
-<%@page import="javax.swing.RepaintManager"%>
 <%@page import="com.hk.dtos.HKDto"%>
-<%@page import="java.util.List"%>
 <%@page import="com.hk.daos.HKDao"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%request.setCharacterEncoding("utf-8"); %>
@@ -14,54 +15,112 @@
 </head>
 <body>
 <%
-	//1단계: Command 값 받기 - 어떤 요청인지 확인
-	//ex) index.jsp → 글 목록 요청 → hkController.jsp
-	String command = request.getParameter("command");
+	//1단계:command 값 받기 - 어떤 요청인지 확인
+	//     index.jsp -> 글목록요청 -> hkcontroller.jsp?command=boardlist
+	String command=request.getParameter("command");
 	
-	//2단계: DAO객체 생성 - DB관련 작업 수행을 위한 준비단계
-	HKDao dao = new HKDao();
+	//2단계:DAO객체 생성 - DB관련 작업 수행을 위한 준비단계
+	HKDao dao=new HKDao();
 	
-	//3단계: 분기 - Command값 확인 후 요청작업 처리 실행
-	if(command.equals("boardlist")){
-		//글 목록 요청 처리
-		//4단계: 파라미터 받기 ← 여기선 받을 값 X
+	//3단계: 분기 - command값 확인해서 요청작업 처리 실행
+	if(command.equals("boardlist")){//글목록 요청 처리
+		//4단계:파라미터 받기 <--여기서는 받을 값이 없음
 		
 		//5단계:dao메서드 실행
-		List<HKDto> lists = dao.getAllList();		//글 목록 반환
+		List<HKDto> lists=dao.getAllList();//글목록 반환
 		
-		//6단계: Scope 객체에 담기
-		request.setAttribute("lists", lists);	//RS["lists":lists]
+		//6단계:Scope객체에 담기
+		request.setAttribute("lists", lists);// RS["lists":lists]
 		
-		//7단계: 페이지 이동
+		//7단계:페이지 이동
 		pageContext.forward("boardlist.jsp");
-	}else if(command.equals("boarddetail")){	//상세보기
-		//4단계: 파라미터 받기
-		int seq = Integer.parseInt(request.getParameter("seq"));
-		HKDto dto = dao.getBoard(seq);		//글 하나에 대한 정보 
+	}else if(command.equals("boarddetail")){//상세보기
+		//4단계:파라미터받기
+		int seq=Integer.parseInt(request.getParameter("seq"));
+		HKDto dto=dao.getBoard(seq);//글하나에 대한 정보
 		request.setAttribute("dto", dto);
 		pageContext.forward("boarddetail.jsp");
-	}else if(command.equals("insertboardForm")){	//글 추가 폼 이동
-		response.sendRedirect("insertboardForm.jsp");	
-	}else if(command.equals("insertboard")){
-		//4단계: 파라미터 받기
-		String id = request.getParameter("id");
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
+	}else if(command.equals("insertboardform")){//글추가폼이동
+		response.sendRedirect("insertboardForm.jsp");
+	}else if(command.equals("insertboard")){//글추가하기
+		//4단계:파라미터받기
+		String id=request.getParameter("id");
+		String title=request.getParameter("title");
+		String content=request.getParameter("content");
 		
-		boolean isS = dao.insertBoard(new HKDto(id,title,content));
+		boolean isS=dao.insertBoard(new HKDto(id,title,content));
 		if(isS){
-			//response.sendRedirect("hkController.jsp?command=boardlist");
-			pageContext.forward("hkController.jsp?command=boardlist");
+			// 브라우저에 주소창에 응답 URL로 변경된다. update작업시 응답
+			response.sendRedirect("hkController.jsp?command=boardlist");
+			// 브라우저에 주소창에 요청 URL로 적용된다. 조회작업시 응답
+// 			pageContext.forward("hkController.jsp?command=boardlist");
 		}else{
 			%>
 			<script type="text/javascript">
-				alert("글 추가 실패");
-				location.href = "hkController.jsp?command=insertboardForm";
+				alert("글추가실패");
+				location.href="hkController.jsp?command=insertboardform";
 			</script>
-			<% 
+			<%
+		}
+	}else if(command.equals("boardupdateform")){
+		// seq값을 받아서 DAO요청해서 글상세내용을 조회하는 작업
+		// --> 수정폼에 글상세내용이 조회되기때문에
+		String sseq=request.getParameter("seq");
+		int seq=Integer.parseInt(sseq);
+		HKDto dto=dao.getBoard(seq);//글 상세내용 조회
+		
+		request.setAttribute("dto", dto);//request Scope에 담기
+		pageContext.forward("boardupdateform.jsp");
+	}else if(command.equals("boardupdate")){
+		String sseq=request.getParameter("seq");
+		int seq=Integer.parseInt(sseq);
+		String title=request.getParameter("title");
+		String content=request.getParameter("content");
+		
+		boolean isS=dao.updateBoard(new HKDto(seq,title,content));
+		if(isS){
+			response.sendRedirect("hkController.jsp?"
+								  +"command=boarddetail&seq="+seq);
+		}else{
+			//url에 한글을 포함해서 요청할 경우 인코딩하자
+			response.sendRedirect("error.jsp?msg="
+							+URLEncoder.encode("글수정실패","utf-8"));
+		}
+	}else if(command.equals("deleteboard")){
+		String sseq=request.getParameter("seq");
+		int seq=Integer.parseInt(sseq);
+		
+		boolean isS=dao.deleteBoard(seq);
+		if(isS){
+			response.sendRedirect("hkController.jsp?command=boardlist");
+		}else{
+			response.sendRedirect("error.jsp?msg="
+								+URLEncoder.encode("글삭제실패","utf-8"));
+		}
+	}else if(command.equals("muldel")){
+		//삭제할 글의 번호들을 받기(배열)
+		String[] chks=request.getParameterValues("chk");//chk={1,2,3,4}
+		
+		//여러글을 삭제하는 기능 구현: 전달할 파라미터 타입은 배열
+		//자바에서 유효값 처리할 경우
+		//유효하지않은 값을 처리하기 위해 요청이 실행되는 단점
+		/* System.out.println(Arrays.toString(chks));
+		out.println(Arrays.toString(chks));
+		if(chks==null||chks.length==0){
+			response.sendRedirect("error.jsp?msg="
+			+URLEncoder.encode("글삭제할때 최소하나이상체크해야합니다","utf-8"));
+		}else{
+	// 		dao.muldelBoard(chks); */
+			
+	//	}
+		
+		boolean isS = dao.mulDel(chks);
+		if(isS){
+			response.sendRedirect("hkController.jsp?command=boardlist");
+		}else{
+			response.sendRedirect("error.jsp?msg=" + URLEncoder.encode("글 삭제 실패","utf-8"));
 		}
 	}
-	
 %>
 </body>
 </html>

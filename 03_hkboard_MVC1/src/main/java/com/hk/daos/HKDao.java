@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.hk.database.Database;
@@ -174,5 +175,62 @@ public class HKDao extends Database {
 			close(null,psmt,conn);
 		}
 		return count > 0? true:false;
+	}
+	
+	//글 삭제 실행:delete문
+	//여러 글 삭제 실행
+	
+	public boolean mulDel(String[] chks) {
+		boolean isS = true;
+		int[] count = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		String sql = "DELETE FROM HKBOARD WHERE SEQ=? ";
+		
+		try {
+			conn = getConnection();
+			//TX처리: 자동커밋 → 수동 설정
+			conn.setAutoCommit(false);
+			
+			//batch 작업 진행: seq값이 ?에 저장되면서 여러 쿼리가 준비됨
+			psmt = conn.prepareStatement(sql);
+			for(int i = 0; i < chks.length; i++) {
+				psmt.setString(1, chks[i]);
+				psmt.addBatch();
+			}
+			
+			count = psmt.executeBatch();		//실행된 결과를 배열로 반환
+			
+			//TX처리
+			conn.commit();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			//TX처리
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			close(null,psmt,conn);
+			//화면 처리를 위한 성공여부 확인
+			for (int i = 0; i < count.length; i++) {
+				if(count[i]!= 1) {
+					isS = false;
+					break;
+				}
+			}
+		}
+		
+		return isS;
 	}
 }
