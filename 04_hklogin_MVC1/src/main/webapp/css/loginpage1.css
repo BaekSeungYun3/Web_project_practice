@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+*{
+	margin: 0px;
+	padding:0px;
+}
+
+body{
+	background-color: #EAEAEA;
+}
+
+button{
+	border: 1px;
+	background-color:#D5D5D5;
+	border-radius:5px;
+	width:300px;
+	height: 40px;
+	color:black;
+	font-weight: bold;	
+}
+
+form{
+	width: 300px;
+	margin: 10% auto;
+}
+
+input, button{
+	margin:2px;
+}
+
+input[name]{
+	border:0px;
+	width:288px;
+	height: 40px;
+	border-radius: 5px;
+	padding-left: 10px;
+}
