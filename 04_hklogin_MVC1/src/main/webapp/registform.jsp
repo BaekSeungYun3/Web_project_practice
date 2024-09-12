@@ -44,9 +44,7 @@
 		<button type="button" onclick="location.href='index.jsp'">메인</button>
 	</form>
 </div>
-<!-- <div class="footer"> -->
-<!-- 	Copyright 1999-2024. 한경닷컴 All rights reserved. -->
-<!-- </div> -->
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	function sample6_execDaumPostcode() {

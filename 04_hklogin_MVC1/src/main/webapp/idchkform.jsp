@@ -28,7 +28,7 @@
 			parentInputId.focus();
 		}
 		
-		self.close();//현재 창을 닫는다.
+		self.close();
 	}
 </script>
 </body>

@@ -9,9 +9,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<% 
-//    UserDto dto=(UserDto)request.getAttribute("dto");
-%>
 <body>
 <div id="container">
    <div class="main">

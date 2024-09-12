@@ -11,6 +11,7 @@
 <title>Insert title here</title>
 </head>
 <%
+	//리스트 보기
    List<UserDto> list=(List<UserDto>)request.getAttribute("list");
 %>
 <body>

@@ -54,7 +54,7 @@ public class UserDao extends Database{
       return count>0?true:false;
    }
    
-   //아이디 중복 체크하기
+   //아이디 중복 체크
    public String idCheck(String id) {
       String resultId=null;
       

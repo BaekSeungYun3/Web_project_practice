@@ -15,6 +15,7 @@
    UserDto dto=(UserDto)request.getAttribute("dto");
 %>
 <body>
+<!-- 관리자  -->
 <div id="container">
    <div class="main">
       <div class="lead">

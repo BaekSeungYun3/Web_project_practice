@@ -18,6 +18,7 @@
 </script>
 </head>
 <%
+	//리스트 가져오기
    List<UserDto> list=(List<UserDto>)request.getAttribute("list");
 %>
 <body>

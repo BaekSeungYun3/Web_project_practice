@@ -39,7 +39,7 @@
 	}
 //	hkcontroller.jsp/admin/*    --> 로그인정보확인해서 볼수 있는 페이지
 //	hkcontroller.jsp/user/login --> 로그인정보확인해서 볼수 있는 페이지
-//	hkcontroller.jsp/user/regist--> 로그인정보확인 X
+//	hkcontroller.jsp/user/regist--> 로그인정보확인 못함
 	
 	
 %>

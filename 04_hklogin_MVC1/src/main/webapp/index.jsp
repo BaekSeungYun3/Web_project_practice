@@ -35,12 +35,12 @@
 		//입력된 ID구함
 		var id=document.querySelectorAll("input[name=id]")[0].value;
 		
-		if(chkID.checked){//체크가 되어 있으면 쿠키에 id를 저장하자
+		if(chkID.checked){//체크가 되어 있으면 쿠키에 id를 저장
 			setCookie("rememberid",id,100);
 		}
 	}
 	
-	//cookie에 아이디가 저장되어 있다면 id입력박스에 해당 id를 출력하자
+	//cookie에 아이디가 저장되어 있다면 id입력박스에 해당 id를 출력
 	onload=function(){
 		var cookieID=getCookie("rememberid");
 		if(cookieID!=null){

@@ -10,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- 관리자 페이지 -->
 <div id="container">
    <div class="main">
       <div class="lead">
