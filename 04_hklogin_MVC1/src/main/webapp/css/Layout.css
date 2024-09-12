@@ -29,10 +29,10 @@
 }
 
 .footer{
-	position: absolute;
+/* 	position: absolute;
 	left: 0px;
 	right: 0px;
-	bottom: 0px;
+	bottom: 0px; */
 	text-align: center;
 	color: #353535;
 	background-color: #D5D5D5;
@@ -68,4 +68,20 @@ button{
 	color:black;
 	font-weight: bold;
 	margin-left: 60px;
+}
+
+form > a{
+	text-decoration: none;
+}
+
+fieldset > #sample6_postcode,fieldset > input[type=button]{
+	width:380px;
+}
+
+fieldset > #sample6_detailAddress,fieldset > #sample6_extraAddress{
+	width:375px;
+}
+fieldset{
+	margin:10px auto;
+	border-radius: 5px;
 }
